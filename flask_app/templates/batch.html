@@ -1,0 +1,451 @@
+{% extends "base.html" %}
+
+{% block title %}Batch Prediction - NYC Housing Predictor{% endblock %}
+
+{% block content %}
+<div class="container-lg">
+    <!-- Hero Section -->
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h1 class="display-5 fw-bold text-primary mb-3">📁 Batch Property Predictions</h1>
+            <p class="lead text-muted">Upload a CSV file to predict prices for multiple properties at once</p>
+        </div>
+    </div>
+
+    <!-- CSV Format Guide -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-info">
+                <div class="card-header bg-info text-white">
+                    <h5 class="card-title mb-0">📋 CSV Format Requirements</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h6 class="text-info mb-3">Required Columns:</h6>
+                            <ul class="list-unstyled">
+                                <li><code class="text-primary">brokertitle</code> - Real estate broker/agency name</li>
+                                <li><code class="text-primary">type</code> - Property type (e.g., "Condo for sale")</li>
+                                <li><code class="text-primary">beds</code> - Number of bedrooms (integer)</li>
+                                <li><code class="text-primary">bath</code> - Number of bathrooms (float)</li>
+                                <li><code class="text-primary">propertysqft</code> - Property size in sq ft (float)</li>
+                                <li><code class="text-primary">sublocality</code> - NYC area/borough</li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6">
+                            <h6 class="text-info mb-3">Sample Data:</h6>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>brokertitle</th>
+                                            <th>type</th>
+                                            <th>beds</th>
+                                            <th>bath</th>
+                                            <th>propertysqft</th>
+                                            <th>sublocality</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Brokered by COMPASS</td>
+                                            <td>Condo for sale</td>
+                                            <td>2</td>
+                                            <td>1.0</td>
+                                            <td>800.0</td>
+                                            <td>Manhattan</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Brokered by Douglas Elliman</td>
+                                            <td>House for sale</td>
+                                            <td>3</td>
+                                            <td>2.0</td>
+                                            <td>1200.0</td>
+                                            <td>Brooklyn</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="{{ url_for('download_sample') }}" class="btn btn-outline-info">
+                            📥 Download Sample CSV
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- File Upload Section -->
+    <div class="row justify-content-center">
+        <div class="col-xl-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="card-title mb-0">🎯 Upload CSV File</h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="upload-area border-2 border-dashed border-primary rounded p-5 text-center" id="uploadArea">
+                        <div class="upload-content">
+                            <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+                            <h5 class="text-primary mb-3">Drag & Drop your CSV file here</h5>
+                            <p class="text-muted mb-3">or click to browse files</p>
+                            <input type="file" id="csvFile" accept=".csv" class="d-none">
+                            <button class="btn btn-outline-primary" onclick="document.getElementById('csvFile').click()">
+                                Choose File
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- File Info -->
+                    <div class="mt-3 d-none" id="fileInfo">
+                        <div class="alert alert-info">
+                            <strong>File selected:</strong> <span id="fileName"></span><br>
+                            <strong>Size:</strong> <span id="fileSize"></span><br>
+                            <strong>Rows:</strong> <span id="fileRows"></span>
+                        </div>
+                    </div>
+
+                    <!-- Upload Button -->
+                    <div class="text-center mt-4">
+                        <button class="btn btn-success btn-lg px-5 d-none" id="uploadBtn" disabled>
+                            <span class="spinner-border spinner-border-sm d-none me-2" id="uploadSpinner"></span>
+                            🚀 Process File
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="row mt-4 d-none" id="resultsSection">
+        <div class="col-12">
+            <div class="card shadow-sm border-0 border-top border-success border-3">
+                <div class="card-header bg-success text-white">
+                    <h4 class="card-title mb-0">📊 Batch Prediction Results</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Summary Stats -->
+                    <div class="row text-center mb-4" id="summaryStats">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+
+                    <!-- Results Table -->
+                    <div class="table-responsive mb-4">
+                        <table class="table table-striped table-hover" id="resultsTable">
+                            <thead class="table-dark">
+                                <!-- Will be populated by JavaScript -->
+                            </thead>
+                            <tbody>
+                                <!-- Will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Price Distribution Chart -->
+                    <div class="mb-4">
+                        <h5 class="text-primary mb-3">📈 Price Distribution</h5>
+                        <canvas id="distributionChart" height="100"></canvas>
+                    </div>
+
+                    <!-- Download Results -->
+                    <div class="text-center">
+                        <button class="btn btn-primary btn-lg" id="downloadBtn">
+                            📥 Download Results CSV
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+let uploadedData = null;
+let resultsData = null;
+
+// File upload handling
+document.getElementById('csvFile').addEventListener('change', handleFileSelect);
+document.getElementById('uploadArea').addEventListener('click', () => {
+    document.getElementById('csvFile').click();
+});
+
+// Drag and drop handling
+document.getElementById('uploadArea').addEventListener('dragover', (e) => {
+    e.preventDefault();
+    e.currentTarget.classList.add('border-success');
+});
+
+document.getElementById('uploadArea').addEventListener('dragleave', (e) => {
+    e.currentTarget.classList.remove('border-success');
+});
+
+document.getElementById('uploadArea').addEventListener('drop', (e) => {
+    e.preventDefault();
+    e.currentTarget.classList.remove('border-success');
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+        document.getElementById('csvFile').files = files;
+        handleFileSelect({ target: { files: files } });
+    }
+});
+
+function handleFileSelect(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    if (!file.name.toLowerCase().endsWith('.csv')) {
+        alert('Please select a CSV file');
+        return;
+    }
+    
+    // Display file info
+    document.getElementById('fileName').textContent = file.name;
+    document.getElementById('fileSize').textContent = (file.size / 1024).toFixed(1) + ' KB';
+    document.getElementById('fileInfo').classList.remove('d-none');
+    document.getElementById('uploadBtn').classList.remove('d-none');
+    
+    // Read file to count rows
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const text = e.target.result;
+        const lines = text.trim().split('\n');
+        document.getElementById('fileRows').textContent = (lines.length - 1) + ' data rows';
+        document.getElementById('uploadBtn').disabled = false;
+        
+        // Parse CSV for validation
+        uploadedData = parseCSV(text);
+        validateCSV(uploadedData);
+    };
+    reader.readAsText(file);
+}
+
+function parseCSV(text) {
+    const lines = text.trim().split('\n');
+    const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
+    
+    const data = [];
+    for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(',').map(v => v.trim().replace(/"/g, ''));
+        const row = {};
+        headers.forEach((header, index) => {
+            row[header] = values[index];
+        });
+        data.push(row);
+    }
+    
+    return { headers, data };
+}
+
+function validateCSV(csvData) {
+    const requiredColumns = ['brokertitle', 'type', 'beds', 'bath', 'propertysqft', 'sublocality'];
+    const missingColumns = requiredColumns.filter(col => !csvData.headers.includes(col));
+    
+    if (missingColumns.length > 0) {
+        alert('Missing required columns: ' + missingColumns.join(', '));
+        document.getElementById('uploadBtn').disabled = true;
+        return false;
+    }
+    
+    return true;
+}
+
+// Upload and process file
+document.getElementById('uploadBtn').addEventListener('click', function() {
+    if (!uploadedData) return;
+    
+    // Show loading state
+    const btn = this;
+    const spinner = document.getElementById('uploadSpinner');
+    btn.disabled = true;
+    spinner.classList.remove('d-none');
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+    
+    // Process each row
+    const promises = uploadedData.data.map(row => {
+        // Convert numeric fields
+        const data = {
+            brokertitle: row.brokertitle,
+            type: row.type,
+            beds: parseInt(row.beds),
+            bath: parseFloat(row.bath),
+            propertysqft: parseFloat(row.propertysqft),
+            sublocality: row.sublocality
+        };
+        
+        return fetch('/predict', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        }).then(response => response.json());
+    });
+    
+    Promise.all(promises)
+        .then(results => {
+            resultsData = results.map((result, index) => ({
+                ...uploadedData.data[index],
+                predicted_price: result.predicted_price,
+                price_formatted: result.price_formatted
+            }));
+            
+            displayBatchResults(resultsData);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Batch processing failed: ' + error.message);
+        })
+        .finally(() => {
+            // Reset button
+            btn.disabled = false;
+            spinner.classList.add('d-none');
+            btn.innerHTML = '🚀 Process File';
+        });
+});
+
+function displayBatchResults(results) {
+    const prices = results.map(r => r.predicted_price);
+    const avgPrice = prices.reduce((a, b) => a + b, 0) / prices.length;
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
+    
+    // Summary stats
+    document.getElementById('summaryStats').innerHTML = `
+        <div class="col-md-3">
+            <div class="card bg-light">
+                <div class="card-body py-3">
+                    <h6 class="text-primary mb-1">Properties</h6>
+                    <h4 class="mb-0">${results.length}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-light">
+                <div class="card-body py-3">
+                    <h6 class="text-success mb-1">Avg Price</h6>
+                    <h4 class="mb-0">$${Math.round(avgPrice).toLocaleString()}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-light">
+                <div class="card-body py-3">
+                    <h6 class="text-info mb-1">Min Price</h6>
+                    <h4 class="mb-0">$${Math.round(minPrice).toLocaleString()}</h4>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-light">
+                <div class="card-body py-3">
+                    <h6 class="text-warning mb-1">Max Price</h6>
+                    <h4 class="mb-0">$${Math.round(maxPrice).toLocaleString()}</h4>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Results table
+    const table = document.getElementById('resultsTable');
+    table.querySelector('thead').innerHTML = `
+        <tr>
+            <th>Property Type</th>
+            <th>Location</th>
+            <th>Beds</th>
+            <th>Bath</th>
+            <th>Sq Ft</th>
+            <th>Predicted Price</th>
+        </tr>
+    `;
+    
+    const tbody = table.querySelector('tbody');
+    tbody.innerHTML = results.map(row => `
+        <tr>
+            <td>${row.type}</td>
+            <td>${row.sublocality}</td>
+            <td>${row.beds}</td>
+            <td>${row.bath}</td>
+            <td>${parseFloat(row.propertysqft).toLocaleString()}</td>
+            <td><strong>${row.price_formatted}</strong></td>
+        </tr>
+    `).join('');
+    
+    // Price distribution chart
+    createDistributionChart(prices);
+    
+    // Show results section
+    document.getElementById('resultsSection').classList.remove('d-none');
+    document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+}
+
+function createDistributionChart(prices) {
+    const ctx = document.getElementById('distributionChart').getContext('2d');
+    
+    // Create price bins
+    const bins = 20;
+    const min = Math.min(...prices);
+    const max = Math.max(...prices);
+    const binSize = (max - min) / bins;
+    
+    const binCounts = new Array(bins).fill(0);
+    const binLabels = [];
+    
+    for (let i = 0; i < bins; i++) {
+        const binStart = min + i * binSize;
+        const binEnd = binStart + binSize;
+        binLabels.push(`$${Math.round(binStart/1000)}K-${Math.round(binEnd/1000)}K`);
+        
+        binCounts[i] = prices.filter(price => 
+            price >= binStart && (i === bins - 1 ? price <= binEnd : price < binEnd)
+        ).length;
+    }
+    
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: binLabels,
+            datasets: [{
+                label: 'Number of Properties',
+                data: binCounts,
+                backgroundColor: 'rgba(13, 110, 253, 0.6)',
+                borderColor: 'rgba(13, 110, 253, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false }
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+}
+
+// Download results
+document.getElementById('downloadBtn').addEventListener('click', function() {
+    if (!resultsData) return;
+    
+    // Convert to CSV
+    const headers = ['brokertitle', 'type', 'beds', 'bath', 'propertysqft', 'sublocality', 'predicted_price', 'price_formatted'];
+    const csvContent = [
+        headers.join(','),
+        ...resultsData.map(row => headers.map(header => `"${row[header]}"`).join(','))
+    ].join('\n');
+    
+    // Download file
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `nyc_housing_predictions_${new Date().toISOString().split('T')[0]}.csv`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+});
+</script>
+{% endblock %}

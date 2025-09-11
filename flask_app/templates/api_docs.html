@@ -1,0 +1,323 @@
+{% extends "base.html" %}
+
+{% block title %}API Documentation - NYC Housing Predictor{% endblock %}
+
+{% block content %}
+<div class="container-lg">
+    <!-- Hero Section -->
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h1 class="display-5 fw-bold text-primary mb-3">📚 API Documentation</h1>
+            <p class="lead text-muted">RESTful API for programmatic access to NYC housing price predictions</p>
+        </div>
+    </div>
+
+    <!-- Quick Start -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="card-title mb-0">🚀 Quick Start</h4>
+                </div>
+                <div class="card-body">
+                    <p class="mb-3">Base URL: <code class="text-primary">{{ request.url_root }}</code></p>
+                    
+                    <h6 class="text-primary mb-2">Test the API:</h6>
+                    <pre class="bg-light p-3 rounded"><code>curl -X POST {{ request.url_root }}predict \
+  -H "Content-Type: application/json" \
+  -d '{
+    "brokertitle": "Brokered by COMPASS",
+    "type": "Condo for sale",
+    "beds": 2,
+    "bath": 1.0,
+    "propertysqft": 800.0,
+    "sublocality": "Manhattan"
+  }'</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Endpoints -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h4 class="card-title mb-0">🔮 POST /predict</h4>
+                </div>
+                <div class="card-body">
+                    <p class="mb-3">Predict housing price for a single property.</p>
+                    
+                    <h6 class="text-success mb-2">Request Body:</h6>
+                    <pre class="bg-light p-3 rounded mb-3"><code>{
+  "brokertitle": "string",     // Real estate broker/agency
+  "type": "string",            // Property type
+  "beds": integer,             // Number of bedrooms
+  "bath": float,               // Number of bathrooms
+  "propertysqft": float,       // Property size in sq ft
+  "sublocality": "string"      // NYC area/borough
+}</code></pre>
+
+                    <h6 class="text-success mb-2">Response:</h6>
+                    <pre class="bg-light p-3 rounded mb-3"><code>{
+  "predicted_price": 1323814.25,
+  "price_formatted": "$1,323,814",
+  "model_info": "XGBoost (Freq)",
+  "features_used": [...],
+  "model_performance": {
+    "validation_r2": 0.7183,
+    "validation_rmse": 1215863
+  }
+}</code></pre>
+
+                    <!-- Interactive Tester -->
+                    <div class="card bg-light">
+                        <div class="card-header">
+                            <h6 class="mb-0">🧪 Try It Out</h6>
+                        </div>
+                        <div class="card-body">
+                            <form id="apiTestForm">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-2">
+                                            <label class="form-label">Broker Title:</label>
+                                            <select class="form-select form-select-sm" name="brokertitle">
+                                                {% for broker in brokers %}
+                                                <option value="{{ broker }}">{{ broker }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="mb-2">
+                                            <label class="form-label">Property Type:</label>
+                                            <select class="form-select form-select-sm" name="type">
+                                                {% for ptype in property_types %}
+                                                <option value="{{ ptype }}">{{ ptype }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="mb-2">
+                                            <label class="form-label">Beds:</label>
+                                            <input type="number" class="form-control form-control-sm" name="beds" value="2" min="0" max="8">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-2">
+                                            <label class="form-label">Bath:</label>
+                                            <input type="number" class="form-control form-control-sm" name="bath" value="1" min="0" max="6" step="0.5">
+                                        </div>
+                                        <div class="mb-2">
+                                            <label class="form-label">Property Sq Ft:</label>
+                                            <input type="number" class="form-control form-control-sm" name="propertysqft" value="800" min="200" max="5000">
+                                        </div>
+                                        <div class="mb-2">
+                                            <label class="form-label">Sublocality:</label>
+                                            <select class="form-select form-select-sm" name="sublocality">
+                                                {% for area in sublocalities %}
+                                                <option value="{{ area }}">{{ area }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-success btn-sm">Test API</button>
+                            </form>
+                            
+                            <div class="mt-3 d-none" id="apiTestResult">
+                                <h6>Response:</h6>
+                                <pre class="bg-dark text-light p-3 rounded small"><code id="apiResultCode"></code></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Health Check Endpoint -->
+            <div class="card mb-4">
+                <div class="card-header bg-info text-white">
+                    <h4 class="card-title mb-0">💚 GET /health</h4>
+                </div>
+                <div class="card-body">
+                    <p class="mb-3">Health check endpoint to verify API status.</p>
+                    
+                    <h6 class="text-info mb-2">Response:</h6>
+                    <pre class="bg-light p-3 rounded mb-3"><code>{
+  "status": "healthy",
+  "model_loaded": "models/best_model_xgboost_freq_20250909.joblib",
+  "model_type": "XGBoost (Freq)",
+  "features_required": [...]
+}</code></pre>
+
+                    <a href="/health" target="_blank" class="btn btn-info btn-sm">Test Health Check</a>
+                </div>
+            </div>
+
+            <!-- Model Info Endpoint -->
+            <div class="card mb-4">
+                <div class="card-header bg-warning text-white">
+                    <h4 class="card-title mb-0">📊 GET /model_info</h4>
+                </div>
+                <div class="card-body">
+                    <p class="mb-3">Get detailed model information and metadata.</p>
+                    
+                    <h6 class="text-warning mb-2">Response:</h6>
+                    <pre class="bg-light p-3 rounded mb-3"><code>{
+  "model_info": {
+    "name": "XGBoost (Freq)",
+    "created_timestamp": "2025-09-09T..."
+  },
+  "performance": {
+    "validation_r2": 0.7183,
+    "validation_rmse": 1215863
+  },
+  "data_info": {
+    "selected_features": [...]
+  }
+}</code></pre>
+
+                    <a href="/model_metadata_info" target="_blank" class="btn btn-warning btn-sm text-white">Test Model Info</a>
+                </div>
+            </div>
+
+            <!-- Code Examples -->
+            <div class="card mb-4">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="card-title mb-0">💻 Code Examples</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="nav nav-tabs" id="codeExampleTabs">
+                        <li class="nav-item">
+                            <button class="nav-link active" id="python-tab" data-bs-toggle="tab" data-bs-target="#python">Python</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" id="javascript-tab" data-bs-toggle="tab" data-bs-target="#javascript">JavaScript</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link" id="curl-tab" data-bs-toggle="tab" data-bs-target="#curl">cURL</button>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content mt-3">
+                        <div class="tab-pane fade show active" id="python">
+                            <pre class="bg-dark text-light p-3 rounded"><code>import requests
+
+# Single prediction
+response = requests.post('{{ request.url_root }}predict', json={
+    "brokertitle": "Brokered by COMPASS",
+    "type": "Condo for sale",
+    "beds": 2,
+    "bath": 1.0,
+    "propertysqft": 800.0,
+    "sublocality": "Manhattan"
+})
+
+result = response.json()
+print(f"Predicted price: {result['price_formatted']}")
+
+# Health check
+health = requests.get('{{ request.url_root }}health')
+print(f"API Status: {health.json()['status']}")
+</code></pre>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="javascript">
+                            <pre class="bg-dark text-light p-3 rounded"><code>// Single prediction
+fetch('{{ request.url_root }}predict', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+        brokertitle: "Brokered by COMPASS",
+        type: "Condo for sale",
+        beds: 2,
+        bath: 1.0,
+        propertysqft: 800.0,
+        sublocality: "Manhattan"
+    })
+})
+.then(response => response.json())
+.then(data => {
+    console.log('Predicted price:', data.price_formatted);
+})
+.catch(error => console.error('Error:', error));
+</code></pre>
+                        </div>
+                        
+                        <div class="tab-pane fade" id="curl">
+                            <pre class="bg-dark text-light p-3 rounded"><code># Single prediction
+curl -X POST {{ request.url_root }}predict \
+  -H "Content-Type: application/json" \
+  -d '{
+    "brokertitle": "Brokered by COMPASS",
+    "type": "Condo for sale",
+    "beds": 2,
+    "bath": 1.0,
+    "propertysqft": 800.0,
+    "sublocality": "Manhattan"
+  }'
+
+# Health check
+curl {{ request.url_root }}health
+</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error Responses -->
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="card-title mb-0">⚠️ Error Responses</h4>
+                </div>
+                <div class="card-body">
+                    <h6 class="text-danger mb-2">400 Bad Request - Missing/Invalid Input:</h6>
+                    <pre class="bg-light p-3 rounded mb-3"><code>{
+  "error": "Missing required features: ['beds', 'bath']"
+}</code></pre>
+
+                    <h6 class="text-danger mb-2">500 Internal Server Error - Prediction Error:</h6>
+                    <pre class="bg-light p-3 rounded"><code>{
+  "error": "Prediction error: Model prediction failed"
+}</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// API Test Form
+document.getElementById('apiTestForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Collect form data
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData);
+    
+    // Convert numeric fields
+    data.beds = parseInt(data.beds);
+    data.bath = parseFloat(data.bath);
+    data.propertysqft = parseFloat(data.propertysqft);
+    
+    // Make API call
+    fetch('/predict', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(result => {
+        document.getElementById('apiResultCode').textContent = JSON.stringify(result, null, 2);
+        document.getElementById('apiTestResult').classList.remove('d-none');
+    })
+    .catch(error => {
+        document.getElementById('apiResultCode').textContent = 'Error: ' + error.message;
+        document.getElementById('apiTestResult').classList.remove('d-none');
+    });
+});
+</script>
+{% endblock %}

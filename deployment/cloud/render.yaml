@@ -1,0 +1,35 @@
+# Render.com deployment configuration
+services:
+  # Flask Web App
+  - type: web
+    name: nyc-housing-flask
+    env: docker
+    dockerfilePath: ./deployment/docker/Dockerfile.flask
+    healthCheckPath: /health
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: PORT
+        value: 9696
+    scaling:
+      minInstances: 1
+      maxInstances: 3
+
+  # Streamlit Web App  
+  - type: web
+    name: nyc-housing-streamlit
+    env: docker
+    dockerfilePath: ./deployment/docker/Dockerfile.streamlit
+    healthCheckPath: /_stcore/health
+    envVars:
+      - key: PORT
+        value: 8501
+    scaling:
+      minInstances: 1
+      maxInstances: 2
+
+# Optional: PostgreSQL database for logging/analytics
+databases:
+  - name: nyc-housing-db
+    databaseName: housing_analytics
+    user: housing_user

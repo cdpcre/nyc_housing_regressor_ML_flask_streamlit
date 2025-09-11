@@ -1,0 +1,17 @@
+[build]
+builder = "dockerfile"
+dockerfilePath = "deployment/docker/Dockerfile.flask"
+
+[deploy]
+healthcheckPath = "/health"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+
+[environments.flask]
+variables = { FLASK_ENV = "production", PORT = "9696" }
+
+[environments.streamlit]
+variables = { PORT = "8501" }
+builder = "dockerfile"
+dockerfilePath = "deployment/docker/Dockerfile.streamlit"

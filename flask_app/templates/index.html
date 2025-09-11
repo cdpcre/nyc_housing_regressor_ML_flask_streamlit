@@ -1,0 +1,371 @@
+{% extends "base.html" %}
+
+{% block title %}Single Property Prediction - NYC Housing Predictor{% endblock %}
+
+{% block content %}
+<div class="container-lg">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-4 fw-bold text-primary mb-3">🏠 NYC Housing Price Predictor</h1>
+            <p class="lead text-muted">Get instant price predictions for New York City properties using advanced machine learning</p>
+            
+            <!-- Model Info Cards -->
+            <div class="row justify-content-center mt-4">
+                <div class="col-md-3">
+                    <div class="card bg-light border-0">
+                        <div class="card-body text-center py-3">
+                            <h6 class="card-title text-primary mb-1">Model Type</h6>
+                            <p class="card-text fw-bold mb-0">{{ model_info.model_name if model_info }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-light border-0">
+                        <div class="card-body text-center py-3">
+                            <h6 class="card-title text-success mb-1">R² Score</h6>
+                            <p class="card-text fw-bold mb-0">{{ "%.4f"|format(model_info.performance.validation_r2) if model_info }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card bg-light border-0">
+                        <div class="card-body text-center py-3">
+                            <h6 class="card-title text-warning mb-1">RMSE</h6>
+                            <p class="card-text fw-bold mb-0">${{ "${:,.0f}".format(model_info.performance.validation_rmse) if model_info }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prediction Form -->
+    <div class="row justify-content-center">
+        <div class="col-xl-10">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="card-title mb-0">🔮 Property Price Prediction</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form id="predictionForm">
+                        <div class="row">
+                            <!-- Left Column - Property Details -->
+                            <div class="col-lg-6">
+                                <h5 class="text-primary mb-3">🏠 Property Characteristics</h5>
+                                
+                                <div class="mb-3">
+                                    <label for="beds" class="form-label fw-semibold">Number of Bedrooms</label>
+                                    <select class="form-select" id="beds" name="beds" required>
+                                        <option value="">Select bedrooms...</option>
+                                        {% for i in range(0, 9) %}
+                                            <option value="{{ i }}" {{ 'selected' if i == 2 else '' }}>{{ i }} bedroom{{ 's' if i != 1 else '' }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="bath" class="form-label fw-semibold">Number of Bathrooms</label>
+                                    <select class="form-select" id="bath" name="bath" required>
+                                        <option value="">Select bathrooms...</option>
+                                        {% for i in range(0, 7) %}
+                                            <option value="{{ i }}" {{ 'selected' if i == 1 else '' }}>{{ i }} bathroom{{ 's' if i != 1 else '' }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="propertysqft" class="form-label fw-semibold">Property Size (sq ft)</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="propertysqft" name="propertysqft" 
+                                               min="200" max="10000" value="800" step="1" required>
+                                        <span class="input-group-text">sq ft</span>
+                                    </div>
+                                    <div class="form-text">Enter property size in square feet (200-10,000)</div>
+                                </div>
+                            </div>
+
+                            <!-- Right Column - Location & Broker -->
+                            <div class="col-lg-6">
+                                <h5 class="text-primary mb-3">📍 Location & Broker Details</h5>
+
+                                <div class="mb-3">
+                                    <label for="type" class="form-label fw-semibold">Property Type</label>
+                                    <select class="form-select" id="type" name="type" required>
+                                        <option value="">Select property type...</option>
+                                        {% for ptype in property_types %}
+                                            <option value="{{ ptype }}" {{ 'selected' if ptype == 'Condo for sale' else '' }}>{{ ptype }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="sublocality" class="form-label fw-semibold">Area/Borough</label>
+                                    <select class="form-select" id="sublocality" name="sublocality" required>
+                                        <option value="">Select area...</option>
+                                        {% for area in sublocalities %}
+                                            <option value="{{ area }}" {{ 'selected' if area == 'Manhattan' else '' }}>{{ area }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="brokertitle" class="form-label fw-semibold">Broker/Agency</label>
+                                    <select class="form-select" id="brokertitle" name="brokertitle" required>
+                                        <option value="">Select broker...</option>
+                                        {% for broker in brokers %}
+                                            <option value="{{ broker }}" {{ 'selected' if broker == 'Brokered by COMPASS' else '' }}>{{ broker }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="row mt-4">
+                            <div class="col-12 text-center">
+                                <button type="submit" class="btn btn-primary btn-lg px-5" id="predictBtn">
+                                    🔮 Predict Price
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="row justify-content-center mt-4 d-none" id="resultsSection">
+        <div class="col-xl-10">
+            <div class="card shadow-sm border-0 border-top border-success border-3">
+                <div class="card-header bg-success text-white">
+                    <h4 class="card-title mb-0">💰 Prediction Results</h4>
+                </div>
+                <div class="card-body p-4">
+                    <!-- Main Price Display -->
+                    <div class="text-center mb-4">
+                        <h2 class="display-3 fw-bold text-success mb-2" id="predictedPrice">$0</h2>
+                        <p class="lead text-muted" id="priceCategory">Predicted NYC Housing Price</p>
+                    </div>
+
+                    <!-- Metrics Row -->
+                    <div class="row text-center mb-4">
+                        <div class="col-md-4">
+                            <div class="card bg-light border-0">
+                                <div class="card-body py-3">
+                                    <h6 class="card-title text-primary mb-1">Price per sq ft</h6>
+                                    <p class="card-text h5 mb-0" id="pricePerSqft">$0</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-light border-0">
+                                <div class="card-body py-3">
+                                    <h6 class="card-title text-info mb-1">Model Confidence</h6>
+                                    <p class="card-text h5 mb-0" id="modelConfidence">{{ "%.1f%%"|format(model_info.performance.validation_r2 * 100) if model_info }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card bg-light border-0">
+                                <div class="card-body py-3">
+                                    <h6 class="card-title text-warning mb-1">Market Category</h6>
+                                    <p class="card-text h5 mb-0" id="marketCategory">-</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price Comparison Chart -->
+                    <div class="mb-4">
+                        <h5 class="text-primary mb-3">📊 Price Comparison</h5>
+                        <canvas id="priceChart" height="100"></canvas>
+                    </div>
+
+                    <!-- Property Summary -->
+                    <div class="card bg-light border-0">
+                        <div class="card-body">
+                            <h6 class="card-title text-primary mb-3">📋 Property Summary</h6>
+                            <div class="row" id="propertySummary">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Input validation for property size
+document.getElementById('propertysqft').addEventListener('input', function() {
+    // Ensure only numbers are entered
+    this.value = this.value.replace(/[^0-9]/g, '');
+    
+    // Validate range
+    if (parseInt(this.value) > 10000) {
+        this.value = 10000;
+    } else if (parseInt(this.value) < 200 && this.value !== '') {
+        this.value = 200;
+    }
+});
+
+// Form submission handling
+document.getElementById('predictionForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    console.log('Form submission started');
+    
+    // Show loading state
+    const predictBtn = document.getElementById('predictBtn');
+    const originalText = predictBtn.innerHTML;
+    
+    predictBtn.disabled = true;
+    predictBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Predicting...';
+    
+    // Collect form data
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData);
+    
+    // Convert numeric fields
+    data.beds = parseInt(data.beds);
+    data.bath = parseFloat(data.bath);
+    data.propertysqft = parseFloat(data.propertysqft);
+    
+    // Debug: Log the data being sent
+    console.log('Sending prediction data:', data);
+    
+    // Make prediction request with timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+    
+    fetch('/predict', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        signal: controller.signal
+    })
+    .then(response => {
+        console.log('Response status:', response.status);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(result => {
+        console.log('Prediction result:', result);
+        if (result.error) {
+            throw new Error(result.error);
+        }
+        displayResults(result, data);
+    })
+    .catch(error => {
+        console.error('Prediction error:', error);
+        if (error.name === 'AbortError') {
+            alert('Prediction request timed out. Please try again.');
+        } else {
+            alert('Prediction failed: ' + error.message);
+        }
+    })
+    .finally(() => {
+        // Clear timeout and reset button state
+        clearTimeout(timeoutId);
+        predictBtn.disabled = false;
+        predictBtn.innerHTML = originalText;
+    });
+});
+
+function displayResults(result, inputData) {
+    // Update price display
+    document.getElementById('predictedPrice').textContent = result.price_formatted;
+    document.getElementById('pricePerSqft').textContent = '$' + Math.round(result.predicted_price / inputData.propertysqft);
+    document.getElementById('marketCategory').textContent = getMarketCategory(result.predicted_price);
+    
+    // Update property summary
+    const summaryHtml = `
+        <div class="col-md-6">
+            <p><strong>Location:</strong> ${inputData.sublocality}</p>
+            <p><strong>Type:</strong> ${inputData.type}</p>
+            <p><strong>Size:</strong> ${inputData.beds} bed, ${inputData.bath} bath</p>
+        </div>
+        <div class="col-md-6">
+            <p><strong>Square Feet:</strong> ${inputData.propertysqft.toLocaleString()} sq ft</p>
+            <p><strong>Broker:</strong> ${inputData.brokertitle.replace('Brokered by ', '')}</p>
+            <p><strong>Predicted Price:</strong> ${result.price_formatted}</p>
+        </div>
+    `;
+    document.getElementById('propertySummary').innerHTML = summaryHtml;
+    
+    // Create price comparison chart
+    createPriceChart(result.predicted_price);
+    
+    // Show results section
+    document.getElementById('resultsSection').classList.remove('d-none');
+    document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+}
+
+function getMarketCategory(price) {
+    if (price < 500000) return 'Budget-Friendly';
+    if (price < 1500000) return 'Mid-Range';
+    return 'Luxury';
+}
+
+function createPriceChart(predictedPrice) {
+    const ctx = document.getElementById('priceChart').getContext('2d');
+    
+    // Destroy existing chart if it exists
+    if (window.priceChart && typeof window.priceChart.destroy === 'function') {
+        window.priceChart.destroy();
+    }
+    
+    const data = {
+        labels: ['Budget Range', 'Mid-Range', 'Luxury Range', 'Your Prediction'],
+        datasets: [{
+            label: 'Price ($)',
+            data: [400000, 1000000, 2000000, predictedPrice],
+            backgroundColor: [
+                'rgba(54, 162, 235, 0.6)',
+                'rgba(75, 192, 192, 0.6)',
+                'rgba(153, 102, 255, 0.6)',
+                'rgba(255, 99, 132, 0.8)'
+            ],
+            borderColor: [
+                'rgba(54, 162, 235, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 99, 132, 1)'
+            ],
+            borderWidth: 2
+        }]
+    };
+    
+    window.priceChart = new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return '$' + value.toLocaleString();
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+</script>
+{% endblock %}

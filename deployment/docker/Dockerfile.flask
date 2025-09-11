@@ -1,0 +1,33 @@
+# Flask Web Application Dockerfile
+FROM python:3.11-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first for better caching
+COPY flask_app/requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application code
+COPY flask_app/ flask_app/
+COPY shared/ shared/
+COPY models/ models/
+COPY data/ data/
+
+# Set Python path to include shared modules
+ENV PYTHONPATH="${PYTHONPATH}:/app"
+
+# Expose port
+EXPOSE 9696
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:9696/health || exit 1
+
+# Run the Flask app
+CMD ["python", "flask_app/app.py"]
