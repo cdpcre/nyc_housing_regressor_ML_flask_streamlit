@@ -14,7 +14,7 @@
 ## 🏗️ Folder structure
 
 ```
-midterm_project/
+nyc_housing_regressor_ML_flask_streamlit/
 ├── 📱 flask_app/          # Professional web interface
 │   ├── app.py            # Enhanced Flask app
 │   ├── templates/        # Bootstrap HTML templates

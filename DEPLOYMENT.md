@@ -21,9 +21,9 @@
 1. **Go to:** https://share.streamlit.io/
 2. **Sign in** with GitHub account
 3. **Click "New app"**
-4. **Select your repository:** `mlzooomcamp-course`
+4. **Select your repository:** `nyc_housing_regressor_ML_flask_streamlit`
 5. **Set branch:** `main` 
-6. **Set main file path:** `midterm_project/streamlit_app.py`
+6. **Set main file path:** `streamlit_app/streamlit_app.py`
 7. **Click "Deploy!"**
 
 ### Step 3: Access Your App

@@ -15,7 +15,7 @@ Comprehensive testing suite for the NYC Housing Price Predictor application.
 
 **Usage:**
 ```bash
-cd midterm_project
+cd nyc_housing_regressor_ML_flask_streamlit
 python tests/test_model.py
 ```
 
@@ -44,7 +44,7 @@ Predicted price: $1323814
 
 **Usage:**
 ```bash
-cd midterm_project
+cd nyc_housing_regressor_ML_flask_streamlit
 python tests/test_system.py
 ```
 
@@ -54,7 +54,7 @@ python tests/test_system.py
 1. **Environment Setup:**
    ```bash
    conda activate env_mlzoomcamp
-   cd midterm_project
+   cd nyc_housing_regressor_ML_flask_streamlit
    ```
 
 2. **Required Components:**

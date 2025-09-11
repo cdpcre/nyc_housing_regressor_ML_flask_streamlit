@@ -18,7 +18,7 @@ This project demonstrates a complete ML pipeline from data preprocessing to prod
 ## 📁 New Project Structure
 
 ```
-midterm_project/
+nyc_housing_regressor_ML_flask_streamlit/
 ├── 📱 flask_app/
 │   ├── app.py                 # Enhanced Flask web app + API
 │   ├── templates/             # Bootstrap HTML templates

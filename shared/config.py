@@ -7,7 +7,7 @@ import os
 def get_project_root():
     """Get the project root directory"""
     current_dir = os.path.dirname(os.path.abspath(__file__))  # shared/
-    return os.path.dirname(current_dir)  # midterm_project/
+    return os.path.dirname(current_dir)  # project root/
 
 PROJECT_ROOT = get_project_root()
 MODEL_PATH = os.path.join(PROJECT_ROOT, 'models', 'best_model_xgboost_freq_20250909.joblib')
