@@ -209,12 +209,9 @@ This starts:
 
 ## ☁️ Cloud Deployment
 
-### Streamlit Cloud (Recommended)
+### Streamlit Cloud
 
-1. **Push to GitHub**
-2. **Go to**: https://share.streamlit.io/
-3. **Connect repo** and set path: `streamlit_app/streamlit_app.py`
-4. **Deploy** and get public URL
+# Follow the link: https://nychousingcdpcreapp-regress.streamlit.app/
 
 ### Railway.app
 
