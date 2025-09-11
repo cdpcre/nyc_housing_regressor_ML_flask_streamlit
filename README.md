@@ -80,6 +80,8 @@ python app.py
 
 ### 📊 Streamlit Application
 
+- **Streamlit Cloud**: https://nychousingcdpcreapp-regress.streamlit.app
+
 **For data science workflows:**
 
 1. **Navigate to Streamlit app**:
@@ -208,10 +210,6 @@ This starts:
 - **Nginx proxy**: http://localhost:80
 
 ## ☁️ Cloud Deployment
-
-### Streamlit Cloud
-
-# Follow the link: https://nychousingcdpcreapp-regress.streamlit.app/
 
 ### Railway.app
 
