@@ -213,13 +213,13 @@ This starts:
 
 # Railway.app
 
-# Push to GitHub then connect to Railway
-# Uses deployment/cloud/railway.toml configuration
+- Push to GitHub then connect to Railway
+- Uses deployment/cloud/railway.toml configuration
 
 # Render.com
 
-# Push to GitHub then connect to Render
-# Uses deployment/cloud/render.yaml configuration
+- Push to GitHub then connect to Render
+- Uses deployment/cloud/render.yaml configuration
 
 ## 📊 Model Performance
 
