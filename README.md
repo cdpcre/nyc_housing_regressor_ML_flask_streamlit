@@ -131,7 +131,7 @@ streamlit run streamlit_app.py
 
 ## 🌐 Web Interfaces
 
-### Flask Web App Features
+# Flask Web App Features
 
 | Feature | Description |
 |---------|-------------|
@@ -142,7 +142,7 @@ streamlit run streamlit_app.py
 | 💾 **Data Export** | Download predictions as CSV |
 | 📱 **Mobile Responsive** | Works perfectly on all devices |
 
-### Streamlit App Features
+# Streamlit App Features
 
 | Feature | Description |
 |---------|-------------|
@@ -154,7 +154,7 @@ streamlit run streamlit_app.py
 
 ## ⚡ REST API Endpoints
 
-### Core Endpoints
+# Core Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
@@ -163,7 +163,7 @@ streamlit run streamlit_app.py
 | `GET` | `/model_metadata_info` | Model details |
 | `GET` | `/download-sample` | Sample CSV download |
 
-### Example API Usage
+# Example API Usage
 
 ```python
 import requests
@@ -185,7 +185,7 @@ print(f"Predicted price: {result['price_formatted']}")
 
 ## 🐳 Docker Deployment
 
-### Quick Docker Start
+# Quick Docker Start
 
 ```bash
 # Build and run Flask app
@@ -197,7 +197,7 @@ docker build -f deployment/docker/Dockerfile.streamlit -t nyc-housing-streamlit 
 docker run -p 8501:8501 nyc-housing-streamlit
 ```
 
-### Docker Compose (Both Apps)
+# Docker Compose (Both Apps)
 
 ```bash
 cd deployment/docker
@@ -211,12 +211,12 @@ This starts:
 
 ## ☁️ Cloud Deployment
 
-### Railway.app
+# Railway.app
 
 # Push to GitHub then connect to Railway
 # Uses deployment/cloud/railway.toml configuration
 
-### Render.com
+# Render.com
 
 # Push to GitHub then connect to Render
 # Uses deployment/cloud/render.yaml configuration
@@ -233,7 +233,7 @@ This starts:
 
 ## 🎨 Visualization Examples
 
-### Altair Charts in Notebooks
+# Altair Charts in Notebooks
 
 - **Price Distribution**: Interactive histogram with log scale
 - **Geographic Clusters**: Scatter plot with color-coded regions  
@@ -241,7 +241,7 @@ This starts:
 - **Property Types**: Horizontal bar chart with counts
 - **Price vs Distance**: Scatter plot from Manhattan center
 
-### Web Interface Charts
+# Web Interface Charts
 
 - **Price Comparison**: Horizontal bar chart showing budget/mid/luxury ranges
 - **Batch Results**: Distribution histogram for uploaded datasets
@@ -249,7 +249,7 @@ This starts:
 
 ## 🛠️ Development
 
-### Running Tests
+# Running Tests
 
 ```bash
 # Test Flask API
@@ -263,7 +263,7 @@ python tests/test_model.py
 python tests/test_api.py
 ```
 
-### File Organization
+# File Organization
 
 ```bash
 # Shared utilities
@@ -292,7 +292,7 @@ models/             # Trained model files
 
 ## 🔧 Configuration
 
-### Key Configuration Files
+# Key Configuration Files
 
 - **`shared/config.py`**: Centralized settings
 - **`flask_app/requirements.txt`**: Flask dependencies
@@ -300,7 +300,7 @@ models/             # Trained model files
 - **`deployment/docker/`**: Docker configurations
 - **`deployment/cloud/`**: Cloud deployment settings
 
-### Environment Variables
+# Environment Variables
 
 ```bash
 # Flask app
@@ -313,21 +313,21 @@ STREAMLIT_SERVER_PORT=8501
 
 ## 📈 Advanced Features
 
-### Caching & Performance
+# Caching & Performance
 
 - **Model Caching**: Models loaded once and cached
 - **Prediction Caching**: Identical requests cached with LRU
 - **Static Assets**: CSS/JS cached by browser
 - **Database Ready**: Architecture supports future DB integration
 
-### Security Features
+# Security Features
 
 - **Input Validation**: Comprehensive request validation
 - **Error Handling**: Secure error messages
 - **CORS Headers**: Configurable cross-origin requests
 - **Rate Limiting Ready**: Architecture supports rate limiting
 
-### Monitoring & Analytics
+# Monitoring & Analytics
 
 - **Health Checks**: Built-in endpoints for monitoring
 - **Request Logging**: Comprehensive logging system
@@ -336,17 +336,17 @@ STREAMLIT_SERVER_PORT=8501
 
 ## 🎯 Use Cases
 
-### For Data Scientists
+# For Data Scientists
 - **Research**: Interactive Jupyter notebooks with Altair
 - **Experimentation**: Streamlit interface for model testing
 - **Visualization**: Beautiful charts and graphs
 
-### For Developers  
+# For Developers  
 - **API Integration**: RESTful endpoints for applications
 - **Web Interface**: Professional Flask web app
 - **Docker Deployment**: Easy containerization
 
-### For Business Users
+# For Business Users
 - **Single Predictions**: Easy-to-use web forms
 - **Batch Processing**: Upload CSV files for bulk predictions
 - **Data Export**: Download results and visualizations
