@@ -223,6 +223,8 @@ python app.py
 
 ### 📊 Streamlit Application
 
+- **Streamlit Cloud**: https://nychousingcdpcreapp-regress.streamlit.app
+
 **For data science workflows:**
 
 1. **Navigate to Streamlit app**:
@@ -272,7 +274,7 @@ streamlit run streamlit_app.py
 
 ## 🌐 Web Interfaces
 
-### Flask Web App Features
+# Flask Web App Features
 
 | Feature | Description |
 |---------|-------------|
@@ -283,7 +285,7 @@ streamlit run streamlit_app.py
 | 💾 **Data Export** | Download predictions as CSV |
 | 📱 **Mobile Responsive** | Works perfectly on all devices |
 
-### Streamlit App Features
+# Streamlit App Features
 
 | Feature | Description |
 |---------|-------------|
@@ -295,7 +297,7 @@ streamlit run streamlit_app.py
 
 ## ⚡ REST API Endpoints
 
-### Core Endpoints
+# Core Endpoints
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
@@ -304,7 +306,7 @@ streamlit run streamlit_app.py
 | `GET` | `/model_metadata_info` | Model details |
 | `GET` | `/download-sample` | Sample CSV download |
 
-### Example API Usage
+# Example API Usage
 
 ```python
 import requests
@@ -326,7 +328,7 @@ print(f"Predicted price: {result['price_formatted']}")
 
 ## 🐳 Docker Deployment
 
-### Quick Docker Start
+# Quick Docker Start
 
 ```bash
 # Build and run Flask app
@@ -338,7 +340,7 @@ docker build -f deployment/docker/Dockerfile.streamlit -t nyc-housing-streamlit 
 docker run -p 8501:8501 nyc-housing-streamlit
 ```
 
-### Docker Compose (Both Apps)
+# Docker Compose (Both Apps)
 
 ```bash
 cd deployment/docker
@@ -352,263 +354,5 @@ This starts:
 
 ## ☁️ Cloud Deployment
 
-**📘 Complete deployment guide available in [CLOUD_DEPLOYMENT.md](CLOUD_DEPLOYMENT.md)**
-
-### Quick Cloud Deployment Options
-
-#### Option 1: Render.com (Free - Recommended)
-
-1. Push code to GitHub
-2. Go to [Render.com](https://render.com)
-3. Create new "Web Service"
-4. Connect repository and deploy
-5. Get your live URL!
-
-See [CLOUD_DEPLOYMENT.md](CLOUD_DEPLOYMENT.md) for detailed step-by-step instructions.
-
-#### Option 2: Streamlit Cloud (For Streamlit App)
-
-1. **Push to GitHub**
-2. **Go to**: https://share.streamlit.io/
-3. **Connect repo** and set path: `streamlit_app/streamlit_app.py`
-4. **Deploy** and get public URL
-
-### Railway.app
-
-# Push to GitHub then connect to Railway
-# Uses deployment/cloud/railway.toml configuration
-
-### Render.com
-
-# Push to GitHub then connect to Render
-# Uses deployment/cloud/render.yaml configuration
-
-## 📊 Model Performance
-
-| Metric | Value | Description |
-|--------|-------|-------------|
-| **R² Score** | 0.7183 | Explains 72% of price variance |
-| **RMSE** | $1,215,863 | Average prediction error |
-| **Features** | 6 | Property characteristics + location |
-| **Training Data** | 2,948 | Properties after cleaning |
-| **Response Time** | <100ms | API response time |
-
-## 🎨 Visualization Examples
-
-### Altair Charts in Notebooks
-
-- **Price Distribution**: Interactive histogram with log scale
-- **Geographic Clusters**: Scatter plot with color-coded regions  
-- **Correlation Matrix**: Heatmap with hover tooltips
-- **Property Types**: Horizontal bar chart with counts
-- **Price vs Distance**: Scatter plot from Manhattan center
-
-### Web Interface Charts
-
-- **Price Comparison**: Horizontal bar chart showing budget/mid/luxury ranges
-- **Batch Results**: Distribution histogram for uploaded datasets
-- **Real-time Updates**: Charts update automatically with predictions
-
-## 🛠️ Development
-
-### Running Tests
-
-```bash
-# Test Flask API
-cd flask_app
-python -m pytest tests/
-
-# Test model functionality  
-python tests/test_model.py
-
-# Test API endpoints
-python tests/test_api.py
-```
-
-### File Organization
-
-```bash
-# Script utilities (training and shared modules)
-script/
-├── train.py        # Training script
-├── config.py       # Configuration constants
-├── predict.py      # Model loading and prediction functions
-└── utils.py        # FrequencyEncoder class
-
-# Flask application
-flask_app/
-├── app.py          # Main Flask application
-├── templates/      # Jinja2 HTML templates  
-└── static/         # CSS, JavaScript, images
-
-# Streamlit application
-streamlit_app/
-└── streamlit_app.py # Streamlit interface
-
-# Data and models
-data/
-├── raw/            # Original datasets
-└── processed/      # Cleaned data splits
-
-models/             # Trained model files
-```
-
-## 🔧 Configuration
-
-### Key Configuration Files
-
-- **`shared/config.py`**: Centralized settings
-- **`flask_app/requirements.txt`**: Flask dependencies
-- **`streamlit_app/requirements.txt`**: Streamlit dependencies
-- **`deployment/docker/`**: Docker configurations
-- **`deployment/cloud/`**: Cloud deployment settings
-
-### Environment Variables
-
-```bash
-# Flask app
-FLASK_ENV=production
-PORT=9696
-
-# Streamlit app
-STREAMLIT_SERVER_PORT=8501
-```
-
-## 📈 Advanced Features
-
-### Caching & Performance
-
-- **Model Caching**: Models loaded once and cached
-- **Prediction Caching**: Identical requests cached with LRU
-- **Static Assets**: CSS/JS cached by browser
-- **Database Ready**: Architecture supports future DB integration
-
-### Security Features
-
-- **Input Validation**: Comprehensive request validation
-- **Error Handling**: Secure error messages
-- **CORS Headers**: Configurable cross-origin requests
-- **Rate Limiting Ready**: Architecture supports rate limiting
-
-### Monitoring & Analytics
-
-- **Health Checks**: Built-in endpoints for monitoring
-- **Request Logging**: Comprehensive logging system
-- **Performance Metrics**: Response time tracking
-- **Error Tracking**: Detailed error reporting
-
-## 🎯 Use Cases
-
-### For Data Scientists
-- **Research**: Interactive Jupyter notebooks with Altair
-- **Experimentation**: Streamlit interface for model testing
-- **Visualization**: Beautiful charts and graphs
-
-### For Developers  
-- **API Integration**: RESTful endpoints for applications
-- **Web Interface**: Professional Flask web app
-- **Docker Deployment**: Easy containerization
-
-### For Business Users
-- **Single Predictions**: Easy-to-use web forms
-- **Batch Processing**: Upload CSV files for bulk predictions
-- **Data Export**: Download results and visualizations
-
-## 🤝 Contributing
-
-This project demonstrates best practices for:
-- ✅ **Clean Architecture**: Separation of concerns
-- ✅ **Multiple Interfaces**: Web, API, and notebook access
-- ✅ **Production Ready**: Docker, cloud deployment, monitoring
-- ✅ **User Experience**: Professional design and interactions
-- ✅ **Data Visualization**: Interactive charts and graphs
-- ✅ **Documentation**: Comprehensive guides and examples
-
----
-
----
-
-## 🎓 ML Zoomcamp Midterm Project - Evaluation Criteria
-
-This project fulfills all requirements for the DataTalks.Club ML Zoomcamp 2025 Midterm Project:
-
-### ✅ Checklist (16/16 points)
-
-| Criteria | Points | Status | Evidence |
-|----------|--------|--------|----------|
-| **Problem Description** | 2/2 | ✅ | Clear problem context, use cases, and dataset description in README |
-| **EDA** | 2/2 | ✅ | Extensive analysis in `notebooks/eda_preprocessing.ipynb` with distributions, correlations, feature importance |
-| **Model Training** | 3/3 | ✅ | Multiple models (Linear, Tree, RF, XGBoost) with hyperparameter tuning in `notebooks/feature_engineering.ipynb` |
-| **Exporting to Script** | 1/1 | ✅ | `script/train.py` - standalone training script |
-| **Reproducibility** | 1/1 | ✅ | Complete instructions, dataset included, notebooks executable |
-| **Model Deployment** | 1/1 | ✅ | Flask app deployed at `flask_app/app.py` |
-| **Dependency Management** | 2/2 | ✅ | `requirements.txt` + virtual environment setup guide |
-| **Containerization** | 2/2 | ✅ | `Dockerfile` + build/run instructions |
-| **Cloud Deployment** | 2/2 | ✅ | Complete guide in `CLOUD_DEPLOYMENT.md` with multiple platform options |
-
-**Total: 16/16 points** 🎉
-
-### 📂 Project Structure for Evaluation
-
-```
-Key Files for Review:
-├── README.md                           # Problem description, setup, usage
-├── script/
-│   └── train.py                        # Training script (exported from notebook)
-├── requirements.txt                    # All dependencies
-├── Dockerfile                          # Containerization
-├── CLOUD_DEPLOYMENT.md                 # Cloud deployment guide
-├── notebooks/
-│   ├── eda_preprocessing.ipynb         # Extensive EDA
-│   └── feature_engineering.ipynb       # Model training & selection
-├── flask_app/app.py                    # Deployed model service
-└── models/                             # Trained model artifacts
-```
-
-### 🔄 Reproducibility Instructions
-
-**Full reproduction from scratch:**
-
-```bash
-# 1. Setup environment
-git clone <repository-url>
-cd nyc_housing_regressor_ML_flask_streamlit
-python -m venv venv
-source venv/bin/activate  # or venv\Scripts\activate on Windows
-pip install -r requirements.txt
-
-# 2. Train model
-python script/train.py
-
-# 3. Run deployment
-cd flask_app
-python app.py
-
-# 4. Test prediction
-curl -X POST http://localhost:9696/predict \
-  -H "Content-Type: application/json" \
-  -d '{"brokertitle": "Brokered by COMPASS", "type": "Condo for sale", "beds": 2, "bath": 1.0, "propertysqft": 800.0, "sublocality": "Manhattan"}'
-```
-
----
-
-## 📞 Support
-
-For questions about this project:
-- 📚 **API Docs**: Visit http://localhost:9696/api-docs
-- 🔍 **Health Check**: Visit http://localhost:9696/health
+- 🔍 **Health Check**: Visit http://localhost:9696/health  
 - 📊 **Model Info**: Visit http://localhost:9696/model_metadata_info
-- 💬 **Issues**: Open an issue on GitHub
-- 📧 **Contact**: [Your contact information]
-
----
-
-## 🏆 Acknowledgments
-
-- **DataTalks.Club** for the ML Zoomcamp course
-- **NYC Open Data** for the housing dataset
-- **Scikit-learn** and **XGBoost** communities
-
----
-
-**Built with ❤️ for ML Zoomcamp 2025 Midterm Project**
