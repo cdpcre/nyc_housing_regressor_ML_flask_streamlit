@@ -40,7 +40,7 @@ def test_project_structure():
     required_files = [
         'flask_app/app.py',
         'streamlit_app/streamlit_app.py',
-        'shared/models.py',
+        'shared/predict.py',
         'shared/utils.py',
         'shared/config.py',
         'data/raw/NY-House-Dataset.csv'
@@ -93,7 +93,7 @@ def test_shared_modules():
         print("  ✅ Configuration constants imported")
         
         # Test models module import
-        from models import get_model_info
+        from predict import get_model_info
         print("  ✅ Models module imported")
         
         print("✅ Shared modules test passed!")

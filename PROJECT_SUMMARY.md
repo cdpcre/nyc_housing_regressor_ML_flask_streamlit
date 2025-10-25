@@ -26,7 +26,7 @@ nyc_housing_regressor_ML_flask_streamlit/
 ├── 📚 notebooks/          # Research & development
 │   └── *.ipynb          # Altair-enhanced notebooks
 ├── 🔧 shared/             # Common utilities
-│   ├── models.py         # ML model utilities with caching
+│   ├── predict.py        # ML model loading and prediction utilities
 │   ├── config.py         # Centralized configuration
 │   └── utils.py          # FrequencyEncoder & utilities
 ├── 📊 models/             # Trained models

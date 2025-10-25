@@ -22,7 +22,7 @@ try:
     from utils import FrequencyEncoder
     globals()['FrequencyEncoder'] = FrequencyEncoder
     
-    from models import load_model_and_metadata, predict_price, batch_predict, get_model_info, get_price_category
+    from predict import load_model_and_metadata, predict_price, batch_predict, get_model_info, get_price_category
     from config import (
         API_HOST, API_PORT, DEBUG_MODE, EXPECTED_FEATURES, 
         PROPERTY_TYPES, SUBLOCALITIES, BROKER_OPTIONS, PRICE_RANGES

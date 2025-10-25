@@ -430,7 +430,7 @@ python tests/test_api.py
 # Shared utilities
 shared/
 ├── config.py       # Configuration constants
-├── models.py       # Model loading with caching
+├── predict.py      # Model loading and prediction functions
 └── utils.py        # FrequencyEncoder class
 
 # Flask application

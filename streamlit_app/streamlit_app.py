@@ -17,7 +17,7 @@ import plotly.graph_objects as go
 from utils import FrequencyEncoder
 globals()['FrequencyEncoder'] = FrequencyEncoder
 
-from models import predict_price, get_model_info, batch_predict
+from predict import predict_price, get_model_info, batch_predict
 from config import PROPERTY_TYPES, SUBLOCALITIES, BROKER_OPTIONS, PRICE_RANGES
 
 # Page configuration
