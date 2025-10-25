@@ -1,11 +1,11 @@
 import sys
 import os
 
-# Add shared module to path
+# Add script module to path (modules moved from shared to script)
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
-shared_dir = os.path.join(parent_dir, 'shared')
-sys.path.insert(0, shared_dir)
+script_dir = os.path.join(parent_dir, 'script')
+sys.path.insert(0, script_dir)
 
 import streamlit as st
 import numpy as np

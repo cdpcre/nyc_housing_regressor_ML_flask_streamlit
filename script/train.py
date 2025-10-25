@@ -29,7 +29,6 @@ warnings.filterwarnings('ignore')
 
 # Get project root directory (parent of script folder)
 project_root = Path(__file__).parent.parent
-sys.path.append(str(project_root / 'shared'))
 
 # Scikit-learn imports
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
@@ -42,13 +41,13 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from xgboost import XGBRegressor
 import joblib
 
-# Import custom FrequencyEncoder
+# Import custom FrequencyEncoder (now in same directory)
 try:
     from utils import FrequencyEncoder
     print("✅ FrequencyEncoder imported successfully")
 except ImportError:
-    print("❌ Error: Could not import FrequencyEncoder from shared/utils.py")
-    print("Make sure you're running this script from the script/ directory")
+    print("❌ Error: Could not import FrequencyEncoder from script/utils.py")
+    print("Make sure the utils.py file is in the script/ directory")
     sys.exit(1)
 
 

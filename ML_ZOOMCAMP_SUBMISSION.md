@@ -287,7 +287,7 @@ Priority Files:
 Supporting Files:
 - .env.example                  # Configuration template
 - models/                       # Trained model artifacts
-- shared/utils.py              # FrequencyEncoder implementation
+- script/utils.py              # FrequencyEncoder implementation
 ```
 
 ---

@@ -12,11 +12,11 @@ import numpy as np
 import requests
 import time
 
-# Add shared directory to Python path
+# Add script directory to Python path (modules moved from shared to script)
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(current_dir)
-shared_dir = os.path.join(project_root, 'shared')
-sys.path.insert(0, shared_dir)
+script_dir = os.path.join(project_root, 'script')
+sys.path.insert(0, script_dir)
 sys.path.insert(0, project_root)
 
 # Change to project root for proper file access
@@ -40,9 +40,10 @@ def test_project_structure():
     required_files = [
         'flask_app/app.py',
         'streamlit_app/streamlit_app.py',
-        'shared/predict.py',
-        'shared/utils.py',
-        'shared/config.py',
+        'script/predict.py',
+        'script/utils.py',
+        'script/config.py',
+        'script/train.py',
         'data/raw/NY-House-Dataset.csv'
     ]
     

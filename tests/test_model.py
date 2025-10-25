@@ -4,13 +4,13 @@ import numpy as np
 import sys
 import os
 
-# Add shared directory to Python path
+# Add script directory to Python path (modules moved from shared to script)
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(current_dir)
-shared_dir = os.path.join(project_root, 'shared')
+script_dir = os.path.join(project_root, 'script')
 models_dir = os.path.join(project_root, 'models')
 
-sys.path.insert(0, shared_dir)
+sys.path.insert(0, script_dir)
 sys.path.insert(0, project_root)
 
 # Change to project root directory for proper file access

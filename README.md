@@ -78,8 +78,9 @@ nyc_housing_regressor_ML_flask_streamlit/
 ├── 📚 notebooks/
 │   ├── eda_preprocessing.ipynb    # Updated with Altair plots
 │   └── feature_engineering.ipynb # Model training
-├── 🔧 shared/
-│   ├── models.py             # Model utilities with caching
+├── 🔧 script/
+│   ├── train.py              # Training script
+│   ├── predict.py            # Model loading and prediction utilities
 │   ├── utils.py              # FrequencyEncoder and utilities
 │   └── config.py             # Shared configuration
 ├── 📊 models/                # Model files
@@ -427,8 +428,9 @@ python tests/test_api.py
 ### File Organization
 
 ```bash
-# Shared utilities
-shared/
+# Script utilities (training and shared modules)
+script/
+├── train.py        # Training script
 ├── config.py       # Configuration constants
 ├── predict.py      # Model loading and prediction functions
 └── utils.py        # FrequencyEncoder class

@@ -25,7 +25,8 @@ nyc_housing_regressor_ML_flask_streamlit/
 │   └── requirements.txt  # Streamlit-specific deps
 ├── 📚 notebooks/          # Research & development
 │   └── *.ipynb          # Altair-enhanced notebooks
-├── 🔧 shared/             # Common utilities
+├── 🔧 script/             # Training scripts and shared utilities
+│   ├── train.py          # Training script
 │   ├── predict.py        # ML model loading and prediction utilities
 │   ├── config.py         # Centralized configuration
 │   └── utils.py          # FrequencyEncoder & utilities

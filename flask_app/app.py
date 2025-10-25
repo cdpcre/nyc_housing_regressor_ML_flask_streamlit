@@ -11,27 +11,27 @@ from werkzeug.exceptions import BadRequest
 import tempfile
 import io
 
-# Add shared module to path
+# Add script module to path (modules moved from shared to script)
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
-shared_dir = os.path.join(parent_dir, 'shared')
-sys.path.insert(0, shared_dir)
+script_dir = os.path.join(parent_dir, 'script')
+sys.path.insert(0, script_dir)
 
 try:
     # Import FrequencyEncoder first and add to global namespace (needed for model loading)
     from utils import FrequencyEncoder
     globals()['FrequencyEncoder'] = FrequencyEncoder
-    
+
     from predict import load_model_and_metadata, predict_price, batch_predict, get_model_info, get_price_category
     from config import (
-        API_HOST, API_PORT, DEBUG_MODE, EXPECTED_FEATURES, 
+        API_HOST, API_PORT, DEBUG_MODE, EXPECTED_FEATURES,
         PROPERTY_TYPES, SUBLOCALITIES, BROKER_OPTIONS, PRICE_RANGES
     )
-    print(f"✅ Successfully imported shared modules from: {shared_dir}")
+    print(f"✅ Successfully imported modules from: {script_dir}")
 except ImportError as e:
     print(f"❌ Import error: {e}")
-    print(f"Shared directory: {shared_dir}")
-    print(f"Shared directory exists: {os.path.exists(shared_dir)}")
+    print(f"Script directory: {script_dir}")
+    print(f"Script directory exists: {os.path.exists(script_dir)}")
     raise
 
 # Configure logging
