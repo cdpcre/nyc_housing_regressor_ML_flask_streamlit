@@ -1,2 +1,4 @@
 *.pyc
 *.pyo
+.claude/*
+.DS_Store
