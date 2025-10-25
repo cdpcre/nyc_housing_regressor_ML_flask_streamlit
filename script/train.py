@@ -4,7 +4,7 @@ NYC Housing Price Prediction - Training Script
 ===============================================
 
 This script trains the XGBoost regression model for NYC housing price prediction.
-Extracted from the feature_engineering.ipynb notebook for ML Zoomcamp midterm project.
+Extracted from the feature_engineering.ipynb notebook.
 
 Usage:
     cd script
@@ -369,7 +369,6 @@ def main():
     """Main training pipeline."""
     print("\n" + "="*60)
     print("NYC HOUSING PRICE PREDICTION - MODEL TRAINING")
-    print("ML Zoomcamp Midterm Project")
     print("="*60)
 
     # Check if data file exists
