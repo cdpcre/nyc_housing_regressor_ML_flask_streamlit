@@ -92,16 +92,16 @@ def test_script_modules():
         # Test config import
         from config import PROPERTY_TYPES, SUBLOCALITIES, BROKER_OPTIONS
         print("  ✅ Configuration constants imported")
-        
-        # Test models module import
-        from models import get_model_info
-        print("  ✅ Models module imported")
-        
-        print("✅ Shared modules test passed!")
+
+        # Test predict module import
+        from predict import get_model_info
+        print("  ✅ Predict module imported")
+
+        print("✅ Script modules test passed!")
         return True
         
     except Exception as e:
-        print(f"  ❌ Shared modules test failed: {e}")
+        print(f"  ❌ Script modules test failed: {e}")
         return False
 
 def test_model_loading():
