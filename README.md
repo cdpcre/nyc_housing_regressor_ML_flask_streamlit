@@ -157,6 +157,10 @@ python -c "import pandas, numpy, sklearn, xgboost, flask, streamlit; print('All 
 
 ```bash
 # Make sure you're in the project root directory
+python script/train.py
+
+# Or navigate to script folder
+cd script
 python train.py
 ```
 
@@ -533,7 +537,7 @@ This project fulfills all requirements for the DataTalks.Club ML Zoomcamp 2025 M
 | **Problem Description** | 2/2 | ✅ | Clear problem context, use cases, and dataset description in README |
 | **EDA** | 2/2 | ✅ | Extensive analysis in `notebooks/eda_preprocessing.ipynb` with distributions, correlations, feature importance |
 | **Model Training** | 3/3 | ✅ | Multiple models (Linear, Tree, RF, XGBoost) with hyperparameter tuning in `notebooks/feature_engineering.ipynb` |
-| **Exporting to Script** | 1/1 | ✅ | `train.py` - standalone training script |
+| **Exporting to Script** | 1/1 | ✅ | `script/train.py` - standalone training script |
 | **Reproducibility** | 1/1 | ✅ | Complete instructions, dataset included, notebooks executable |
 | **Model Deployment** | 1/1 | ✅ | Flask app deployed at `flask_app/app.py` |
 | **Dependency Management** | 2/2 | ✅ | `requirements.txt` + virtual environment setup guide |
@@ -547,7 +551,8 @@ This project fulfills all requirements for the DataTalks.Club ML Zoomcamp 2025 M
 ```
 Key Files for Review:
 ├── README.md                           # Problem description, setup, usage
-├── train.py                            # Training script (exported from notebook)
+├── script/
+│   └── train.py                        # Training script (exported from notebook)
 ├── requirements.txt                    # All dependencies
 ├── Dockerfile                          # Containerization
 ├── CLOUD_DEPLOYMENT.md                 # Cloud deployment guide
@@ -571,7 +576,7 @@ source venv/bin/activate  # or venv\Scripts\activate on Windows
 pip install -r requirements.txt
 
 # 2. Train model
-python train.py
+python script/train.py
 
 # 3. Run deployment
 cd flask_app

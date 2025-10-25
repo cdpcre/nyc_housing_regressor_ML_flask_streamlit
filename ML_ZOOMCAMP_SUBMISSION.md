@@ -81,11 +81,11 @@ A production-ready machine learning system for predicting NYC housing prices usi
 
 ### 4. Exporting Notebook to Script (1/1 point)
 
-**Location**: [train.py](train.py)
+**Location**: [script/train.py](script/train.py)
 
 **Evidence**:
 - ✅ Standalone training script (401 lines)
-- ✅ Executable: `python train.py`
+- ✅ Executable: `python script/train.py` or `cd script && python train.py`
 - ✅ Complete pipeline:
   1. Data loading and preprocessing
   2. Train/val/test split (80/10/10)
@@ -99,7 +99,7 @@ A production-ready machine learning system for predicting NYC housing prices usi
 
 **Usage**:
 ```bash
-python train.py
+python script/train.py
 # Outputs: best_model_xgboost_freq_YYYYMMDD.joblib
 ```
 
@@ -123,7 +123,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 # Train
-python train.py
+python script/train.py
 
 # Deploy
 cd flask_app && python app.py
@@ -275,14 +275,14 @@ docker-compose up -d
 
 ```
 Priority Files:
-1. README.md                    # Start here - complete project overview
-2. train.py                     # Training script (exported from notebook)
-3. notebooks/eda_preprocessing.ipynb        # EDA analysis
-4. notebooks/feature_engineering.ipynb      # Model training
-5. CLOUD_DEPLOYMENT.md          # Deployment instructions
-6. flask_app/app.py            # Deployed service
-7. requirements.txt             # All dependencies
-8. Dockerfile                   # Containerization
+1. README.md                              # Start here - complete project overview
+2. script/train.py                        # Training script (exported from notebook)
+3. notebooks/eda_preprocessing.ipynb      # EDA analysis
+4. notebooks/feature_engineering.ipynb    # Model training
+5. CLOUD_DEPLOYMENT.md                    # Deployment instructions
+6. flask_app/app.py                       # Deployed service
+7. requirements.txt                       # All dependencies
+8. Dockerfile                             # Containerization
 
 Supporting Files:
 - .env.example                  # Configuration template
@@ -317,7 +317,7 @@ source venv/bin/activate
 pip install -r requirements.txt
 
 # Train model
-python train.py
+python script/train.py
 
 # Run Flask app
 cd flask_app
