@@ -3,19 +3,25 @@
 A complete machine learning web application for predicting New York City housing prices.
 Features both a professional Flask web interface and Streamlit app, with comprehensive API access and beautiful visualizations.
 
+## 🚀 Live Demo
+
+**Try the app now:** [NYC Housing Price Predictor on Streamlit Cloud](https://nychousingcdpcreapp-regress.streamlit.app/)
+
+---
+
 ## 🎯 Project Overview
 
 This project demonstrates a complete ML pipeline from data preprocessing to production deployment:
 
 - **🧠 Machine Learning**: XGBoost model with R² = 0.7183 performance
 - **🌐 Flask Web App**: Professional HTML interface with Bootstrap styling
-- **📊 Streamlit App**: Interactive data science interface
+- **📊 Streamlit App**: Interactive data science interface (deployed on Streamlit Cloud)
 - **⚡ REST API**: Programmatic access for integration
 - **📈 Altair Visualizations**: Beautiful, interactive charts in Jupyter notebooks
 - **🐳 Docker Ready**: Complete containerization for deployment
 - **☁️ Cloud Deploy**: Ready for Railway, Render, Streamlit Cloud
 
-## 📁 New Project Structure
+## 📁 Project Structure
 
 ```
 nyc_housing_regressor_ML_flask_streamlit/
@@ -36,10 +42,11 @@ nyc_housing_regressor_ML_flask_streamlit/
 ├── 📚 notebooks/
 │   ├── eda_preprocessing.ipynb    # Updated with Altair plots
 │   └── feature_engineering.ipynb # Model training
-├── 🔧 shared/
-│   ├── models.py             # Model utilities with caching
+├── 🔧 script/
+│   ├── predict.py            # Model utilities with caching
 │   ├── utils.py              # FrequencyEncoder and utilities
-│   └── config.py             # Shared configuration
+│   ├── config.py             # Shared configuration
+│   └── train.py              # Model training script
 ├── 📊 models/                # Model files
 ├── 💾 data/
 │   ├── raw/                  # Original data
@@ -53,7 +60,30 @@ nyc_housing_regressor_ML_flask_streamlit/
 
 ## 🚀 Quick Start Guide
 
-### 🌐 Flask Web Application (NEW!)
+### 📊 Streamlit Application (Deployed Online!)
+
+**Try it live**: [https://nychousingcdpcreapp-regress.streamlit.app/](https://nychousingcdpcreapp-regress.streamlit.app/)
+
+**Or run locally:**
+
+1. **Navigate to Streamlit app**:
+```bash
+cd streamlit_app
+```
+
+2. **Install dependencies**:
+```bash
+pip install -r requirements.txt
+```
+
+3. **Start the app**:
+```bash
+streamlit run streamlit_app.py
+```
+
+4. **Open in browser**: http://localhost:8501
+
+### 🌐 Flask Web Application
 
 **Professional web interface with Bootstrap styling:**
 
@@ -78,28 +108,7 @@ python app.py
 - **API Docs**: http://localhost:9696/api-docs
 - **Health Check**: http://localhost:9696/health
 
-### 📊 Streamlit Application
-
-**For data science workflows:**
-
-1. **Navigate to Streamlit app**:
-```bash
-cd streamlit_app
-```
-
-2. **Install dependencies**:
-```bash
-pip install -r requirements.txt
-```
-
-3. **Start the app**:
-```bash
-streamlit run streamlit_app.py
-```
-
-4. **Open in browser**: http://localhost:8501
-
-## ✨ New Features
+## ✨ Features
 
 ### 🎨 Flask Web Interface
 
@@ -109,6 +118,17 @@ streamlit run streamlit_app.py
 - **API Explorer**: Built-in documentation with testing
 - **Responsive Layout**: Mobile-friendly design
 - **Chart Visualizations**: Real-time price comparisons
+
+### 📊 Streamlit App Features
+
+| Feature | Description |
+|---------|-------------|
+| 🎯 **Model Metrics** | Real-time performance display |
+| 📈 **Interactive Charts** | Plotly visualizations |
+| 🔄 **Batch Processing** | Upload and process multiple properties |
+| 💡 **Usage Tips** | Sidebar with prediction guidance |
+| 📋 **Property Summary** | Detailed prediction breakdown |
+| 🌐 **Cloud Deployed** | Accessible anywhere via Streamlit Cloud |
 
 ### 📈 Enhanced Visualizations
 
@@ -139,16 +159,6 @@ streamlit run streamlit_app.py
 | 📚 **API Documentation** | Interactive testing interface |
 | 💾 **Data Export** | Download predictions as CSV |
 | 📱 **Mobile Responsive** | Works perfectly on all devices |
-
-### Streamlit App Features
-
-| Feature | Description |
-|---------|-------------|
-| 🎯 **Model Metrics** | Real-time performance display |
-| 📈 **Interactive Charts** | Plotly visualizations |
-| 🔄 **Batch Processing** | Upload and process multiple properties |
-| 💡 **Usage Tips** | Sidebar with prediction guidance |
-| 📋 **Property Summary** | Detailed prediction breakdown |
 
 ## ⚡ REST API Endpoints
 
@@ -181,6 +191,17 @@ print(f"Predicted price: {result['price_formatted']}")
 # Output: Predicted price: $1,323,814
 ```
 
+## 📊 Model Performance
+
+| Metric | Value | Description |
+|--------|-------|-------------|
+| **R² Score** | 0.7183 | Explains 72% of price variance |
+| **RMSE** | $1,215,863 | Average prediction error |
+| **Features** | 6 | Property characteristics + location |
+| **Training Data** | 2,948 | Properties after cleaning |
+| **Response Time** | <100ms | API response time |
+| **Model Updated** | Oct 2025 | Latest training date |
+
 ## 🐳 Docker Deployment
 
 ### Quick Docker Start
@@ -209,8 +230,11 @@ This starts:
 
 ## ☁️ Cloud Deployment
 
-### Streamlit Cloud (Recommended)
+### Streamlit Cloud (Deployed!)
 
+**Live App**: [https://nychousingcdpcreapp-regress.streamlit.app/](https://nychousingcdpcreapp-regress.streamlit.app/)
+
+**To deploy your own:**
 1. **Push to GitHub**
 2. **Go to**: https://share.streamlit.io/
 3. **Connect repo** and set path: `streamlit_app/streamlit_app.py`
@@ -218,30 +242,24 @@ This starts:
 
 ### Railway.app
 
+```bash
 # Push to GitHub then connect to Railway
 # Uses deployment/cloud/railway.toml configuration
+```
 
 ### Render.com
 
+```bash
 # Push to GitHub then connect to Render
 # Uses deployment/cloud/render.yaml configuration
-
-## 📊 Model Performance
-
-| Metric | Value | Description |
-|--------|-------|-------------|
-| **R² Score** | 0.7183 | Explains 72% of price variance |
-| **RMSE** | $1,215,863 | Average prediction error |
-| **Features** | 6 | Property characteristics + location |
-| **Training Data** | 2,948 | Properties after cleaning |
-| **Response Time** | <100ms | API response time |
+```
 
 ## 🎨 Visualization Examples
 
 ### Altair Charts in Notebooks
 
 - **Price Distribution**: Interactive histogram with log scale
-- **Geographic Clusters**: Scatter plot with color-coded regions  
+- **Geographic Clusters**: Scatter plot with color-coded regions
 - **Correlation Matrix**: Heatmap with hover tooltips
 - **Property Types**: Horizontal bar chart with counts
 - **Price vs Distance**: Scatter plot from Manhattan center
@@ -261,7 +279,7 @@ This starts:
 cd flask_app
 python -m pytest tests/
 
-# Test model functionality  
+# Test model functionality
 python tests/test_model.py
 
 # Test API endpoints
@@ -272,15 +290,16 @@ python tests/test_api.py
 
 ```bash
 # Shared utilities
-shared/
+script/
 ├── config.py       # Configuration constants
-├── models.py       # Model loading with caching
-└── utils.py        # FrequencyEncoder class
+├── predict.py      # Model loading with caching
+├── utils.py        # FrequencyEncoder class
+└── train.py        # Model training script
 
 # Flask application
 flask_app/
 ├── app.py          # Main Flask application
-├── templates/      # Jinja2 HTML templates  
+├── templates/      # Jinja2 HTML templates
 └── static/         # CSS, JavaScript, images
 
 # Streamlit application
@@ -299,7 +318,7 @@ models/             # Trained model files
 
 ### Key Configuration Files
 
-- **`shared/config.py`**: Centralized settings
+- **`script/config.py`**: Centralized settings
 - **`flask_app/requirements.txt`**: Flask dependencies
 - **`streamlit_app/requirements.txt`**: Streamlit dependencies
 - **`deployment/docker/`**: Docker configurations
@@ -346,7 +365,7 @@ STREAMLIT_SERVER_PORT=8501
 - **Experimentation**: Streamlit interface for model testing
 - **Visualization**: Beautiful charts and graphs
 
-### For Developers  
+### For Developers
 - **API Integration**: RESTful endpoints for applications
 - **Web Interface**: Professional Flask web app
 - **Docker Deployment**: Easy containerization
@@ -371,6 +390,11 @@ This project demonstrates best practices for:
 ## 📞 Support
 
 For questions about this project:
-- 📚 **API Docs**: Visit http://localhost:9696/api-docs
-- 🔍 **Health Check**: Visit http://localhost:9696/health  
-- 📊 **Model Info**: Visit http://localhost:9696/model_metadata_info
+- 🌐 **Live App**: https://nychousingcdpcreapp-regress.streamlit.app/
+- 📚 **API Docs**: Visit http://localhost:9696/api-docs (when running locally)
+- 🔍 **Health Check**: Visit http://localhost:9696/health (when running locally)
+- 📊 **Model Info**: Visit http://localhost:9696/model_metadata_info (when running locally)
+
+---
+
+**Built with ❤️ using Flask, Streamlit, XGBoost, and scikit-learn**

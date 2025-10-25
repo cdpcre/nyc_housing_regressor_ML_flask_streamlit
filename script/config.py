@@ -10,8 +10,8 @@ def get_project_root():
     return os.path.dirname(current_dir)  # project root/
 
 PROJECT_ROOT = get_project_root()
-MODEL_PATH = os.path.join(PROJECT_ROOT, 'models', 'best_model_xgboost_freq_20250909.joblib')
-METADATA_PATH = os.path.join(PROJECT_ROOT, 'models', 'model_metadata_xgboost_freq_20250909.joblib')
+MODEL_PATH = os.path.join(PROJECT_ROOT, 'models', 'best_model_xgboost_freq_20251025.joblib')
+METADATA_PATH = os.path.join(PROJECT_ROOT, 'models', 'model_metadata_xgboost_freq_20251025.joblib')
 
 # API settings
 API_HOST = '0.0.0.0'
