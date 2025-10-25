@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Comprehensive system test for NYC Housing Price Predictor
-Tests all components: model loading, shared modules, predictions, and file structure
+Tests all components: model loading, script modules, predictions, and file structure
 """
 
 import os
@@ -12,11 +12,11 @@ import numpy as np
 import requests
 import time
 
-# Add shared directory to Python path
+# Add script directory to Python path (modules moved from shared to script)
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(current_dir)
-shared_dir = os.path.join(project_root, 'shared')
-sys.path.insert(0, shared_dir)
+script_dir = os.path.join(project_root, 'script')
+sys.path.insert(0, script_dir)
 sys.path.insert(0, project_root)
 
 # Change to project root for proper file access
@@ -28,21 +28,22 @@ def test_project_structure():
     
     required_dirs = [
         'flask_app',
-        'streamlit_app', 
-        'shared',
+        'streamlit_app',
+        'script',
         'models',
         'data/raw',
         'data/processed',
         'notebooks',
         'tests'
     ]
-    
+
     required_files = [
         'flask_app/app.py',
         'streamlit_app/streamlit_app.py',
-        'shared/models.py',
-        'shared/utils.py',
-        'shared/config.py',
+        'script/predict.py',
+        'script/utils.py',
+        'script/config.py',
+        'script/train.py',
         'data/raw/NY-House-Dataset.csv'
     ]
     
@@ -65,9 +66,9 @@ def test_project_structure():
     print("✅ Project structure test passed!")
     return True
 
-def test_shared_modules():
-    """Test that shared modules can be imported and work"""
-    print("\n🔧 Testing Shared Modules...")
+def test_script_modules():
+    """Test that script modules can be imported and work"""
+    print("\n🔧 Testing Script Modules...")
     
     try:
         # Test FrequencyEncoder import
@@ -277,7 +278,7 @@ def run_all_tests():
     
     tests = [
         ("Project Structure", test_project_structure),
-        ("Shared Modules", test_shared_modules), 
+        ("Script Modules", test_script_modules),
         ("Model Loading", test_model_loading),
         ("Model Prediction", test_prediction),
         ("Flask App", test_flask_app),
