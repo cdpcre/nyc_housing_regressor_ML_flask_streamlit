@@ -1,11 +1,11 @@
 import sys
 import os
 
-# Add shared module to path
+# Add script module to path (modules moved from shared to script)
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
-shared_dir = os.path.join(parent_dir, 'shared')
-sys.path.insert(0, shared_dir)
+script_dir = os.path.join(parent_dir, 'script')
+sys.path.insert(0, script_dir)
 
 import streamlit as st
 import numpy as np
@@ -17,7 +17,7 @@ import plotly.graph_objects as go
 from utils import FrequencyEncoder
 globals()['FrequencyEncoder'] = FrequencyEncoder
 
-from models import predict_price, get_model_info, batch_predict
+from predict import predict_price, get_model_info, batch_predict
 from config import PROPERTY_TYPES, SUBLOCALITIES, BROKER_OPTIONS, PRICE_RANGES
 
 # Page configuration

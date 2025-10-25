@@ -112,10 +112,14 @@ def predict_price(input_data: Dict[str, Any], use_log_target: bool = True) -> fl
 def get_model_info() -> Dict[str, Any]:
     """Get model information and metadata"""
     _, metadata = load_model_and_metadata()
+
+    # Handle both old and new metadata structures
+    features = metadata.get('data_info', {}).get('selected_features', EXPECTED_FEATURES)
+
     return {
         'model_name': metadata['model_info']['name'],
         'performance': metadata['performance'],
-        'features': metadata['data_info']['selected_features'],
+        'features': features,
         'created': metadata['model_info']['created_timestamp']
     }
 
@@ -133,25 +137,27 @@ def cached_predict(input_tuple: tuple) -> float:
 def batch_predict(data: pd.DataFrame) -> np.ndarray:
     """
     Efficient batch prediction for multiple properties
-    
+
     Args:
         data: DataFrame with property features
-        
+
     Returns:
         Array of predicted prices
     """
     model, metadata = load_model_and_metadata()
-    expected_features = metadata['data_info']['selected_features']
-    
+
+    # Handle both old and new metadata structures
+    expected_features = metadata.get('data_info', {}).get('selected_features', EXPECTED_FEATURES)
+
     # Ensure correct feature order
     input_df = data[expected_features].copy()
-    
+
     # Make batch predictions
     log_predictions = model.predict(input_df)
-    
+
     # Transform back to original scale
     predictions = np.expm1(log_predictions)
-    
+
     return predictions
 
 def get_price_category(price: float) -> str:
